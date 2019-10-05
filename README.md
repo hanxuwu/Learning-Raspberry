@@ -202,8 +202,23 @@ curl https://raw.githubusercontent.com/TheRemote/PiBenchmarks/master/Storage.sh 
 ```
 
 
+Using macos disk utility format the ssd disk 
+```s
+ls -l /dev/disk/by-uuid
+```
+
+Install
+```s
+wget https://packagecloud.io/headmelted/codebuilds/gpgkey -O -| sudo apt-key
+```
+
+
+
+
+
 References：
 https://www.quarkbook.com/?p=638  
 https://raspberrypi.stackexchange.com/questions/3371/how-can-i-stress-test-my-raspberry-pi  
 https://sites.google.com/site/zsgititit/home/raspberry-shu-mei-pai/raspberry-shi-yong64g-sdxc-micro-sd-ka  
 https://www.raspberrypi.org/downloads/noobs/
+https://jamesachambers.com/raspberry-pi-4-usb-boot-config-guide-for-ssd-flash-drives/
