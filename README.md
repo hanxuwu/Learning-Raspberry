@@ -207,18 +207,109 @@ Using macos disk utility format the ssd disk
 ls -l /dev/disk/by-uuid
 ```
 
-Install
+10 Install Vscode
 ```s
 wget https://packagecloud.io/headmelted/codebuilds/gpgkey -O -| sudo apt-key
 ```
 
+11 Install Mysql
 
+a. Install MySQL
+```s
+$ sudo apt-get install mariadb-server
+```
 
+```s
+sudo mysql_secure_installation 
+```
 
+root
+12345678
 
-References：
+```s
+sudo mysql -u root -p
+```
+
+```sql
+select User,Host,Password from mysql.user
+```
+
+b. install GUI phpmyadmin
+
+```s
+sudo apt install phpmyadmin
+```
+
+add new user
+```s
+sudo mysql -u root -p
+```
+```sql
+GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
+```
+
+Configuring Apache for PHPMyAdmin
+1. Before we can load the PHPMyAdmin interface on our Raspberry Pi, we will need to make some configuration changes to Apache.
+
+To get started, we need to edit the “Apache2.conf” file, we can do this by entering the following into the terminal.
+```S
+sudo nano /etc/apache2/apache2.conf
+```
+2. Now we need to add the following line to the bottom of this file.
+
+This line will include PHPMyAdmin’s configuration and allow it to be loaded in and listened to by Apache.
+```S
+Include /etc/phpmyadmin/apache.conf
+```
+Once done we can save and exit by pressing CTRL + X and then pressing Y then ENTER.
+
+3. Now we need to restart the Apache service on our Raspberry Pi by running the command below.
+
+We need to do this to flush out its current configuration and make it load in our modified file.
+
+```s
+sudo service apache2 restart
+```
+
+Remember to replace the IP Address with your Raspberry Pi’s IP Address. (If you don’t have it, run the `hostname –I` command on your Raspberry Pi )
+
+```
+http://192.168.1.108/phpmyadmin
+```
+
+12. Install selenium
+
+a. download the chromium-chromedriver corresponding to your chrome version 
+Serach `chromium-chromedriver armhf  74`
+
+> https://launchpad.net/ubuntu/+source/chromium-browser/74.0.3729.131-0ubuntu2/+build/16753393
+
+```s
+sudo apt-get update && sudo apt-get upgrade
+```
+> you might want to run apt --fix-broken install tp correct
+> The following additional packages will be installed
+> chromium-chromedrive
+·
+
+13. phpMyadmin import large sql
+
+```s
+sudo nano /etc/phpmyadmin/config.ini.php
+```
+Modify the end
+```
+$cfg['UploadDir'] = '/home/pi/SqlUploadDir'
+```
+Then create a folder named `SqlUploadDir`
+Refresh
+
+## References：
 https://www.quarkbook.com/?p=638  
 https://raspberrypi.stackexchange.com/questions/3371/how-can-i-stress-test-my-raspberry-pi  
 https://sites.google.com/site/zsgititit/home/raspberry-shu-mei-pai/raspberry-shi-yong64g-sdxc-micro-sd-ka  
 https://www.raspberrypi.org/downloads/noobs/
 https://jamesachambers.com/raspberry-pi-4-usb-boot-config-guide-for-ssd-flash-drives/
+https://r00t4bl3.com/post/how-to-install-mysql-mariadb-server-on-raspberry-pi
+https://pimylifeup.com/raspberry-pi-phpmyadmin/
+http://lpwei.com/index.php/archives/34/
