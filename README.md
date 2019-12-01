@@ -313,3 +313,94 @@ https://jamesachambers.com/raspberry-pi-4-usb-boot-config-guide-for-ssd-flash-dr
 https://r00t4bl3.com/post/how-to-install-mysql-mariadb-server-on-raspberry-pi
 https://pimylifeup.com/raspberry-pi-phpmyadmin/
 http://lpwei.com/index.php/archives/34/
+
+
+13. Install docker
+
+a. Install Docker
+```s
+curl -sL get.docker.com | sed 's/9)/10)/' | sh
+```
+b. Add permission to Pi User to run Docker Commands
+```s
+sudo usermod -aG docker pi
+```
+
+```
+Error Message**
+
+    ubuntu@node1:~$ docker run hello-world
+    docker: Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post http://%2Fvar%2Frun%2Fdocker.sock/v1.38/containers/create: dial unix /var/run/docker.sock: connect: permission denied.
+    See 'docker run --help'.
+```
+
+Solution:permissions of the socket indicated in the error message, /var/run/docker.sock:
+
+    ubuntu@ip-172-31-21-106:/var/run$ ls -lrth docker.sock
+    srw-rw---- 1 root root 0 Oct 17 11:08 docker.sock
+    ubuntu@ip-172-31-21-106:/var/run$ sudo chmod 666 /var/run/docker.sock
+    ubuntu@ip-172-31-21-106:/var/run$ ls -lrth docker.sock
+    srw-rw-rw- 1 root root 0 Oct 17 11:08 docker.sock
+
+```s
+sudo chmod 666 /var/run/docker.sock
+```
+
+Reference: 
+https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket
+
+c. Test Docker installation
+```s
+docker run hello-world
+```
+d. IMPORTANT! Install proper dependencies
+```s
+sudo apt-get install libffi-dev libssl-dev
+
+sudo apt-get install -y python python-pip
+```
+e. Install Docker Compose
+```s
+sudo pip install docker-compose==1.24.0
+```
+
+error:
+ImportError: No module named ssl_match_hostname
+
+
+solution
+```s
+sudo pip uninstall backports.ssl-match-hostname
+sudo apt-get install python-backports.ssl-match-hostname
+```
+docker-compose ==1.25.0 doesn't work
+
+
+reference：
+docker 3.7.3
+docker-compose 1.24.0
+
+14. Install raspberry pi netdata
+
+```s
+bash <(curl -Ss https://my-netdata.io/kickstart.sh)
+```
+
+the open : `localhost:19999`
+
+
+15. reboot frpc
+
+```s
+ps -aux|grep frp| grep -v grep
+kill -9 1234
+```
+
+
+16. portainer
+
+```s
+docker pull portainer/portainer:linux-arm
+docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer:linux-arm
+
+```
